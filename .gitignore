@@ -12,3 +12,9 @@
 /OneDrive/
 /Saved Games/
 /Searches/
+# Ignore dataset zip files
+emails.csv.zip
+
+# Ignore Jupyter notebook checkpoints
+.ipynb_checkpoints/
+spam_email_detection.ipynb
