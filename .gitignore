@@ -1,0 +1,14 @@
+# Ignore system files
+*.log
+*.ini
+*.dat
+*.blf
+*.regtrans-ms
+/anaconda3/
+/AppData/
+/Downloads/
+/Music/
+/Videos/
+/OneDrive/
+/Saved Games/
+/Searches/

@@ -3,9 +3,17 @@ import joblib
 
 app = Flask(__name__)
 
-# Load the trained model and vectorizer
-model = joblib.load("spam_classifier.pkl")
-vectorizer = joblib.load("vectorizer.pkl")
+# ✅ Load trained model and vectorizer
+try:
+    model = joblib.load("spam_classifier.pkl")
+    vectorizer = joblib.load("vectorizer.pkl")
+    print("✅ Model and Vectorizer Loaded Successfully!")
+except Exception as e:
+    print(f"❌ Error Loading Model: {e}")
+
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({"message": "Welcome to Spam Email Detection API!"})
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -15,7 +23,7 @@ def predict():
     if not email_text:
         return jsonify({"error": "No email text provided"}), 400
 
-    # Transform input text
+    # ✅ Transform input text
     email_vectorized = vectorizer.transform([email_text])
     prediction = model.predict(email_vectorized)[0]
 
