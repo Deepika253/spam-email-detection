@@ -1,10 +1,9 @@
 from flask import Flask, request, jsonify
 import joblib
-import traceback
 
 app = Flask(__name__)
 
-# ✅ Load Model & Vectorizer with Error Handling
+# ✅ Load Model & Vectorizer
 try:
     model = joblib.load("spam_classifier.pkl")
     vectorizer = joblib.load("vectorizer.pkl")
@@ -12,6 +11,10 @@ try:
 except Exception as e:
     print(f"❌ Error Loading Model: {e}")
     model, vectorizer = None, None
+
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({"message": "Welcome to Spam Email Detection API!"})
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -27,8 +30,8 @@ def predict():
         return jsonify({"prediction": "Spam" if prediction == 1 else "Not Spam"})
     
     except Exception as e:
-        print("❌ Prediction Error:", traceback.format_exc())  # ✅ Debugging Info
+        print("❌ Prediction Error:", e)
         return jsonify({"error": "Internal Server Error"}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)  # ✅ Debug mode enabled
+    app.run(host="0.0.0.0", port=5000, debug=True)
