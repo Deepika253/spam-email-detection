@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spam Email Detector</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 50px;
+        background-color: #f4f4f4;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333;
+      }
+      textarea {
+        width: 100%;
+        height: 150px;
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+      button {
+        margin-top: 15px;
+        padding: 10px 20px;
+        font-size: 18px;
+        color: white;
+        background-color: #28a745;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      button:hover {
+        background-color: #218838;
+      }
+      #result {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Spam Email Detection</h1>
+      <p>Paste your email content below:</p>
+      <textarea
+        id="emailInput"
+        placeholder="Enter email text here..."
+      ></textarea>
+      <br />
+      <button onclick="checkSpam()">Check Spam</button>
+      <p id="result"></p>
+    </div>
+
+    <script>
+      function checkSpam() {
+        let emailText = document.getElementById("emailInput").value;
+        let resultBox = document.getElementById("result");
+
+        if (!emailText.trim()) {
+          alert("Please enter an email to check.");
+          return;
+        }
+
+        fetch("http://127.0.0.1:5000/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email_text: emailText }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            resultBox.innerText = "Prediction: " + data.prediction;
+            resultBox.style.color =
+              data.prediction === "Spam" ? "red" : "green";
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            resultBox.innerText = "Error: Could not connect to API.";
+            resultBox.style.color = "red";
+          });
+      }
+    </script>
+  </body>
+</html>
