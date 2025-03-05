@@ -1,5 +1,5 @@
-Flask 
-joblib 
-pandas 
-scikit-learn 
-gunicorn 
+Flask
+gunicorn
+joblib
+pandas
+scikit-learn
